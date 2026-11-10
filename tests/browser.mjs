@@ -16,6 +16,12 @@ const picture = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="72"
 const logo = `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="64"><rect x="6" y="10" width="30" height="40" rx="4" fill="#ff7800"/><path d="M50 10h28v40H50ZM90 10h28v40H90ZM130 10h28v40h-28Z" fill="#50545a"/></svg>`;
 const fixture = native => `<!doctype html><html lang="pt-BR" ${native ? 'class="native"' : ''}><head><meta charset="utf-8"><title>Ambiente de leitura</title><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="http://localhost:PORT/cdn.css"><style>html.native body,html.native article,html.native nav,html.native header{background:#12151a;color:#e5e5e5}</style></head><body><header><h1>Ambiente de leitura</h1></header><main><nav><strong>Trilha de aprendizagem</strong><p><a href="#lesson">Aula 01</a></p><p class="notice">Atividade concluída</p></nav><article id="lesson"><h2>Fundamentos da inteligência artificial</h2><p id="reading">Uma página clara, com textos, imagens e elementos interativos.</p><div class="gradient">Superfície com gradiente</div><p class="pseudo"></p><p class="cdn">Folha de estilos de outra origem</p><img id="photo" src="/photo.svg" alt="Paisagem de teste"><canvas id="canvas" width="100" height="72"></canvas><p><input id="input" aria-label="Resposta curta" placeholder="Escreva aqui"><select aria-label="Selecione"><option>Uma opção</option></select></p><textarea aria-label="Resposta longa">Texto digitado pelo aluno</textarea><p><button id="interactive" onclick="this.textContent='Funcionou'">Adicionar envio</button></p><table><tr><th>Atividade</th><th>Status</th></tr><tr><td>Aula 01</td><td>Concluída</td></tr><tr><td>Aula 02</td><td>Pendente</td></tr></table><iframe id="same-frame" src="/frame"></iframe><iframe id="blank-frame" srcdoc="<style>body{background:white;color:#222}</style><p>Documento incorporado</p>"></iframe><div id="shadow"></div><div id="dynamic"></div></article></main><script>const shadow=document.querySelector('#shadow').attachShadow({mode:'open'});shadow.innerHTML='<style>p{background:#fff;color:#222;padding:10px}</style><p>Componente com Shadow DOM</p>';const c=document.querySelector('canvas').getContext('2d');c.fillStyle='#e45555';c.fillRect(0,0,100,72);c.fillStyle='#4d8ede';c.fillRect(0,0,50,72);</script></body></html>`;
 const server = createServer((req, res) => {
+  if (req.url === '/stream') {
+    res.writeHead(200, { 'content-type': 'text/html' });
+    res.write('<!doctype html><html><head><style>body,header,article{background:#fff;color:#222}</style></head><body><header>Conteúdo disponível</header><article>Leitura antes do fim do documento</article>' + '<!--' + ' '.repeat(4096) + '-->');
+    setTimeout(() => res.end('</body></html>'), 1500);
+    return;
+  }
   if (req.url === '/styles.css') { res.writeHead(200, { 'content-type': 'text/css' }); res.end(css); }
   else if (req.url === '/cdn.css') { res.writeHead(200, { 'content-type': 'text/css' }); res.end('.cdn{background:#fdf0ea;color:#712e06;padding:12px}'); }
   else if (req.url === '/photo.svg') { res.writeHead(200, { 'content-type': 'image/svg+xml' }); res.end(picture); }
@@ -139,6 +145,20 @@ try {
   assert.equal(await page.locator('#opaque-logo').getAttribute('data-adm-readable'), null);
   pass('contraste genérico de logos: letras clareadas, laranja idêntico, logos claros/opacos preservados');
 
+  await page.evaluate(() => {
+    const holder = document.createElement('div'); holder.id = 'late-brand';
+    holder.innerHTML = '<img alt="Logo de carregamento tardio" src="/brand-logo.svg" width="240" height="64">';
+    const sheet = document.createElement('style'); sheet.id = 'late-brand-style';
+    sheet.textContent = '#late-brand{background:white!important}';
+    document.head.append(sheet); document.querySelector('header').append(holder);
+  });
+  await page.locator('#late-brand img').evaluate(image => image.decode());
+  assert.equal(await page.locator('#late-brand img').getAttribute('data-adm-readable'), null);
+  await page.evaluate(() => document.querySelector('#late-brand-style').sheet.insertRule('#late-brand{background:#000!important}', 1));
+  await waitFor(async () => await page.locator('#late-brand img').getAttribute('data-adm-readable') === 'true', 'O logo não foi reavaliado após a mudança da folha de estilos.');
+  pass('logo é reavaliado após CSS tardio, sem regras específicas por site');
+
+
   await waitFor(() => dark(page, 'input'), 'O campo não escureceu.');
   assert.ok(contrastRatio(rgb(await color(page, 'input')), rgb(await color(page, 'input', 'color'))) >= 4.5);
   assert.equal(await page.locator('textarea').inputValue(), 'Texto digitado pelo aluno');
@@ -175,6 +195,56 @@ try {
   await waitFor(() => dark(page, '.cssom-dynamic'), 'Regra CSSOM dinâmica não escureceu.');
   await waitFor(() => dark(page, '.adopted'), 'Folha de estilo adotada não escureceu.');
   pass('iframes do site, srcdoc, Shadow DOM e conteúdo dinâmico recebem o tema');
+
+  // A registered document-start bundle can initialize while its tab is hidden.
+  // Reveal it with only visibilitychange: no focus/resize may be needed to finish.
+  const revealed = await context.newPage();
+  await revealed.goto(`http://localhost:${port}/background`);
+  const revealedId = await worker.evaluate(async url => (await chrome.tabs.query({ url }))[0].id, revealed.url());
+  await worker.evaluate(async id => {
+    await chrome.storage.local.set({ 'site:localhost': { enabled: true } });
+    // Use the actual extension's isolated world, where document-start runs.
+    await chrome.scripting.executeScript({ target: { tabId: id }, func: () => {
+      globalThis.fixtureHidden = true;
+      Object.defineProperty(document, 'hidden', { configurable: true, get: () => globalThis.fixtureHidden });
+      for (const event of ['focus', 'pageshow']) window.addEventListener(event, e => e.stopImmediatePropagation(), true);
+    } });
+    await chrome.scripting.executeScript({ target: { tabId: id }, files: ['content.js'] });
+  }, revealedId);
+  await waitFor(async () => (await worker.evaluate(id => chrome.tabs.sendMessage(id, { type: 'ADM_GET_STATUS' }), revealedId)).status === 'waiting', 'O script não aguardou a aba oculta.');
+  assert.equal(await revealed.locator('style.darkreader--sync').count(), 0);
+  const revealStarted = performance.now();
+  await worker.evaluate(id => chrome.scripting.executeScript({ target: { tabId: id }, func: () => {
+    globalThis.fixtureHidden = false; document.dispatchEvent(new Event('visibilitychange'));
+  } }), revealedId);
+  await waitFor(() => dark(revealed, 'header'), 'A aba revelada ficou com cabeçalho branco até receber foco.');
+  await waitFor(() => dark(revealed, 'article'), 'A aba revelada ficou com o tema parcial.');
+  const revealMs = performance.now() - revealStarted;
+  pass(`aba oculta termina o tema ao aparecer, sem outro foco ou resize (${Math.round(revealMs)} ms)`);
+  await worker.evaluate(() => chrome.storage.local.remove('site:localhost'));
+  await revealed.close();
+  const streamed = await context.newPage();
+  await streamed.addInitScript(() => {
+    window.fixtureThemeTiming = {};
+    document.addEventListener('DOMContentLoaded', () => { window.fixtureThemeTiming.ready = performance.now(); });
+    function sample() {
+      const header = document.querySelector('header');
+      if (header && getComputedStyle(header).backgroundColor !== 'rgb(255, 255, 255)') {
+        window.fixtureThemeTiming.dark = performance.now(); return;
+      }
+      if (!window.fixtureThemeTiming.ready) requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  });
+  await streamed.bringToFront();
+  const streamStarted = performance.now();
+  await streamed.goto(`http://127.0.0.1:${port}/stream`, { waitUntil: 'commit' });
+  await waitFor(() => dark(streamed, 'header'), 'O cabeçalho esperou o documento inteiro carregar.');
+  const streamTiming = await streamed.evaluate(() => window.fixtureThemeTiming);
+  assert.ok(streamTiming.dark && (!streamTiming.ready || streamTiming.dark < streamTiming.ready), 'O tema esperou DOMContentLoaded.');
+  const firstThemeMs = performance.now() - streamStarted;
+  pass(`tema inicia antes de DOMContentLoaded (${Math.round(firstThemeMs)} ms no teste local)`);
+  await streamed.close();
   await page.screenshot({ path: resolve(out, 'pagina-escura.png'), fullPage: true });
 
   await openPanel();

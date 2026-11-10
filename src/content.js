@@ -26,6 +26,9 @@ const contrastGuard = new ContrastGuard(async enabled => {
   const response = await chrome.runtime.sendMessage({ type: 'ADM_CONTRAST_STYLE', enabled });
   if (!response?.ok) throw new Error('Estilo indisponível.');
 });
+// CSSOM writes do not emit DOM mutations. Revisit known logos only after a
+// stylesheet has actually been transformed, including delayed external CSS.
+document.addEventListener('__adm_theme_updated', () => imageContrast.refresh());
 
 function parseRGB(value) {
   const values = value.match(/[\d.]+/g)?.map(Number);
@@ -50,6 +53,25 @@ function nativeDarkTheme() {
     if (foreground && luminance(background) < 0.08 && contrastRatio(background, foreground) >= 4.5) dark++;
   }
   return dark > 0 && light === 0;
+}
+
+function themeSourceReady() {
+  // Detect the original theme as soon as body + its CSS exist. Waiting for
+  // DOMContentLoaded also waited for unrelated scripts and streamed content.
+  const ready = () => document.body && ![...document.querySelectorAll('link[rel="stylesheet"]')]
+    .some(link => !link.disabled && !link.sheet && (!link.media || matchMedia(link.media).matches));
+  if (ready()) return Promise.resolve();
+  return new Promise(resolve => {
+    const finish = () => {
+      observer.disconnect();
+      for (const event of ['load', 'error', 'DOMContentLoaded']) document.removeEventListener(event, check, true);
+      resolve();
+    };
+    const check = event => { if (ready() || event?.type === 'DOMContentLoaded') finish(); };
+    const observer = new MutationObserver(check);
+    observer.observe(document, { childList: true, subtree: true });
+    for (const event of ['load', 'error', 'DOMContentLoaded']) document.addEventListener(event, check, true);
+  });
 }
 
 function announce(next) {
@@ -77,7 +99,7 @@ async function apply() {
   if (document.hidden && !DarkReader.isEnabled()) { announce('waiting'); return; }
   if (options.preserveNative && !DarkReader.isEnabled()) {
     if (document.readyState === 'loading') {
-      await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve, { once: true }));
+      await themeSourceReady();
     }
     if (revision !== generation || !options.enabled) return;
     if (nativeDarkTheme()) {

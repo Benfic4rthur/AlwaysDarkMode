@@ -32,8 +32,10 @@ Conteúdo inserido depois, iframes autorizados do mesmo site, Shadow DOM e folha
 - Os scripts de conteúdo são registrados somente para os hostnames ativados. Sites desligados desde a instalação não recebem o motor nem observadores.
 - O worker Manifest V3 funciona por eventos e pode ser suspenso pelo Edge. Não há heartbeat, intervalos de atualização ou consulta periódica de abas.
 - A primeira transformação de uma aba oculta é adiada até ela ficar visível.
+- A injeção usa `injectImmediately` e começa assim que o corpo e seus estilos estão disponíveis, sem aguardar scripts e o restante do documento. O motor interno não repete a espera por visibilidade.
 - Ajustes dos controles deslizantes são agrupados para evitar reconstruir o tema a cada movimento.
 - A análise de logos usa lotes pequenos durante períodos ociosos, cache limitado e observação de entrada na tela. Ao desligar, seus observadores e filtros são removidos.
+- O adaptador emite uma notificação agrupada por frame ao transformar estilos; logos já conhecidos são reavaliados quando o fundo chega depois da imagem, sem varrer a página periodicamente.
 - A verificação adicional de rótulos também usa observação de visibilidade e lotes ociosos, sem varreduras periódicas.
 - O cache transitório de recursos externos tem teto de 4 MiB; cada recurso tem limite de 2 MiB e timeout. Recursos já carregados no mesmo domínio usam o cache normal da página.
 

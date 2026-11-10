@@ -44,10 +44,11 @@ async function updateOpenTabs(hostname, enabled) {
       try {
         await chrome.scripting.executeScript({
           target: { tabId: tab.id, allFrames: true }, files: ['content.js'],
+          injectImmediately: true,
         });
       } catch {
         // Restricted third-party frames must not prevent the main page from working.
-        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
+        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'], injectImmediately: true });
       }
     }
   }));
@@ -193,7 +194,7 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
       if (!hostname || !(await readSite(hostname)).enabled) throw new Error('Site não ativado.');
       await chrome.scripting.executeScript({
         target: { tabId: sender.tab.id, frameIds: [sender.frameId] },
-        files: ['proxy.js'], world: 'MAIN',
+        files: ['proxy.js'], world: 'MAIN', injectImmediately: true,
       });
       return {};
     })();

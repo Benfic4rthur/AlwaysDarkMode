@@ -67,7 +67,9 @@ export function engineTheme(settings) {
     scrollbarColor: 'auto',
     selectionColor: 'auto',
     styleSystemControls: true,
-    immediateModify: false,
+    // The content controller already defers hidden tabs. Avoid the engine's
+    // separate cached-visibility wait when a previously hidden tab is revealed.
+    immediateModify: true,
   };
 }
 

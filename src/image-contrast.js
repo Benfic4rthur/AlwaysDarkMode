@@ -58,6 +58,7 @@ export class ImageContrast {
     this.cache = new Map();
     this.pending = new Set();
     this.marked = new Set();
+    this.tracked = new Set();
     this.active = false;
     this.revision = 0;
     this.loaded = event => { if (candidate(event.target)) this.watch(event.target); };
@@ -103,9 +104,18 @@ export class ImageContrast {
   }
 
   watch(image) {
+    this.tracked.add(image);
     // A replacement src must not keep a filter intended for a previous logo.
     if (this.marked.has(image)) { image.removeAttribute('data-adm-readable'); this.marked.delete(image); }
     this.intersections.observe(image);
+  }
+
+  refresh() {
+    if (!this.active) return;
+    for (const image of this.tracked) {
+      if (!image.isConnected) { this.tracked.delete(image); continue; }
+      this.intersections.observe(image);
+    }
   }
 
   schedule() {
@@ -123,7 +133,11 @@ export class ImageContrast {
       for (let count = 0; count < 4 && this.pending.size && this.active && revision === this.revision; count++) {
         const image = this.pending.values().next().value;
         this.pending.delete(image);
-        if (!image.isConnected || !image.complete || !image.naturalWidth || !darkBackdrop(image)) continue;
+        if (!image.isConnected || !image.complete || !image.naturalWidth) continue;
+        if (!darkBackdrop(image)) {
+          image.removeAttribute('data-adm-readable'); this.marked.delete(image);
+          continue;
+        }
         const filter = getComputedStyle(image).filter;
         if (filter !== 'none' && !image.hasAttribute('data-adm-readable')) continue;
         const source = image.currentSrc || image.src;
@@ -196,6 +210,7 @@ export class ImageContrast {
     this.pending.clear();
     for (const image of this.marked) image.removeAttribute('data-adm-readable');
     this.marked.clear();
+    this.tracked.clear();
     this.svg?.remove(); this.style?.remove();
   }
 }

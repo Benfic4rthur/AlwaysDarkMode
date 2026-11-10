@@ -45,7 +45,18 @@ await build({
         const shadowCleanup = '        removeNode(root.querySelector(".darkreader--override"));';
         if (!source.includes(shadowCleanup)) throw new Error('Review the shadow stylesheet cleanup adapter.');
         source = source.replace(shadowCleanup, `${shadowCleanup}\n        removeNode(root.querySelector(".darkreader--invert"));`);
-        return { contents: `const chrome = { runtime: {} };\n${source}`, loader: 'js', resolveDir: resolve(root, 'node_modules/darkreader') };
+        const sheetBuilt = '        buildStyleSheet();\n';
+        const asyncBuilt = '            asyncDeclarations.delete(key);';
+        if (!source.includes(sheetBuilt) || !source.includes(asyncBuilt)) throw new Error('Review the theme update adapter.');
+        source = source.replace(sheetBuilt, `${sheetBuilt}        admThemeUpdated();\n`)
+          .replace(asyncBuilt, `${asyncBuilt}\n            admThemeUpdated();`);
+        const notify = `let admUpdateFrame = 0; function admThemeUpdated() {
+          if (admUpdateFrame) return;
+          admUpdateFrame = requestAnimationFrame(() => { admUpdateFrame = 0;
+            document.dispatchEvent(new CustomEvent('__adm_theme_updated'));
+          });
+        }`;
+        return { contents: `const chrome = { runtime: {} };\n${notify}\n${source}`, loader: 'js', resolveDir: resolve(root, 'node_modules/darkreader') };
       });
     },
   }],
