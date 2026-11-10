@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0e0e16">
+  <title>Always Dark — Menos luz. Mais conforto. | ALLM4</title>
+  <meta name="description" content="Modo escuro para os sites que você escolher. Contraste equilibrado, imagens preservadas e ajustes por site. Conheça o Always Dark, uma extensão ALLM4 para Edge e Chrome.">
+  <link rel="icon" href="assets/always-dark.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/manrope-bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" type="module"></script>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 13.2A8.8 8.8 0 0 1 10.8 3.5 9 9 0 1 0 20.5 13.2Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h7m6 0h3M4 17h3m6 0h7"/><circle cx="14" cy="7" r="3"/><circle cx="10" cy="17" r="3"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/></symbol>
+    <symbol id="i-feather" viewBox="0 0 24 24"><path d="M20 4c-4-4-14 3-14 9v5h5c6 0 13-10 9-14ZM3 21 17 7M6 14h6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-15-4 18"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.7-.5-2.3 3.1-.3 6.5-1.5 6.5-7A5.5 5.5 0 0 0 19.5 5a5 5 0 0 0-.2-3s-1.2-.4-3.8 1.4a13 13 0 0 0-7 0C5.9 1.6 4.7 2 4.7 2a5 5 0 0 0-.2 3A5.5 5.5 0 0 0 3 8.7c0 5.5 3.4 6.7 6.5 7-.6.6-.6 1.3-.5 2.3v4"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="m16 3 5 5-4 1-4 5 1 3-7-7 3 1 5-4 1-4ZM3 21l6-6"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="allm4-brand" href="https://allm4.com/" aria-label="ALLM4, página inicial"><img src="assets/allm4.svg" width="28" height="28" alt="">ALLM4</a>
+      <span class="header-divider" aria-hidden="true"></span>
+      <div class="breadcrumb"><a href="https://allm4.com/#extensoes">Extensões</a><span>/</span><b>Always Dark</b></div>
+      <nav aria-label="Navegação principal">
+        <a href="#recursos" class="nav-detail">Por que usar?</a>
+        <a href="#instalar" class="nav-detail">Como instalar</a>
+        <a class="github-nav" href="https://github.com/Benfic4rthur/AlwaysDarkMode" target="_blank" rel="noreferrer" aria-label="Código do Always Dark no GitHub"><svg class="icon"><use href="#i-github"/></svg></a>
+        <a class="nav-download" href="downloads/Always-Dark-1.0.0.zip" download data-download>Baixar extensão<svg class="icon"><use href="#i-download"/></svg></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="product-brand"><img src="assets/always-dark.svg" width="54" height="54" alt="Ícone Always Dark"><div><b>Always Dark</b><span>FEITO PELA ALLM4</span></div><small data-version>v1.0.0</small></div>
+        <h1 id="hero-title">Menos luz.<br><em>Mais conforto.</em></h1>
+        <p class="hero-description">Seu site de sempre, com uma luz mais agradável.<br class="desktop-break"> Ative o modo escuro, ajuste do seu jeito<br class="desktop-break"> e continue de onde parou.</p>
+        <div class="hero-actions"><a class="button button-primary" href="downloads/Always-Dark-1.0.0.zip" download data-download><svg class="icon"><use href="#i-download"/></svg>Baixar grátis<svg class="icon small"><use href="#i-diagonal"/></svg></a><a class="text-link" href="#demonstracao">Experimente aqui<svg class="icon small"><use href="#i-arrow"/></svg></a></div>
+        <div class="compatibility"><span class="browser-icons"><img src="assets/edge.png" width="21" height="21" alt=""><img src="assets/chrome.svg" width="20" height="20" alt=""></span>Edge e Chrome<i aria-hidden="true"></i>Sem cadastro</div>
+        <p class="release-meta"><span data-version>v1.0.0</span> · <span data-package-size>64 KB</span> · Grátis</p>
+        <p class="micro-note">Download em ZIP · Instalação manual, passo a passo abaixo.</p>
+        <a class="source-link" href="https://github.com/Benfic4rthur/AlwaysDarkMode" target="_blank" rel="noreferrer"><svg class="icon small"><use href="#i-github"/></svg>Código disponível no GitHub<svg class="icon tiny"><use href="#i-diagonal"/></svg></a>
+      </div>
+
+      <div class="hero-visual" id="demonstracao">
+        <div class="visual-glow" aria-hidden="true"></div>
+        <p class="demo-eyebrow"><i></i>SEU CONTEÚDO. UMA LUZ DIFERENTE.</p>
+        <div class="browser-window" id="browser-demo" data-mode="dark" data-tone="dark">
+          <div class="browser-chrome"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock-address"><svg class="icon"><use href="#i-lock"/></svg>seu-site.com / leitura</span><svg class="icon chrome-moon"><use href="#i-moon"/></svg></div>
+          <div class="demo-site-header"><div class="demo-brand"><span class="demo-brand-mark" aria-hidden="true">a<span>✦</span></span><b>aprender</b></div><span>Meu espaço</span><span class="demo-avatar">A</span></div>
+          <div class="demo-layout">
+            <aside class="demo-sidebar" aria-label="Menu ilustrativo"><span>SEU ESPAÇO</span><div class="demo-menu active">Visão geral</div><div class="demo-menu">Minhas leituras</div><div class="demo-menu">Anotações</div><div class="demo-menu">Favoritos</div><div class="demo-sidebar-bottom"><span class="status-dot"></span>Tudo salvo</div></aside>
+            <div class="demo-article"><div class="demo-article-eyebrow">UM TEMPO PARA APRENDER</div><h2>Novas ideias.<br>Novas possibilidades.</h2><p>Aprender começa com a curiosidade.<br>O próximo passo pode estar na sua próxima leitura.</p><div class="demo-image"><img src="assets/reading-landscape.jpg" width="500" height="300" alt="Lago e montanhas; a foto mantém as cores ao alternar o tema"><span><svg class="icon"><use href="#i-image"/></svg>As imagens continuam iguais.</span></div><div class="demo-progress"><span></span><span></span><span></span></div></div>
+          </div>
+        </div>
+
+        <div class="preview-panel" aria-label="Prévia interativa do painel Always Dark">
+          <div class="preview-brand"><img src="assets/always-dark.svg" width="31" height="31" alt=""><div><b>Always Dark<span>.</span></b><small>Uma luz mais confortável.</small></div></div>
+          <div class="preview-site"><div><small>NESTE SITE</small><span id="demo-status"><i></i>Ativado</span></div><div><b>seu-site.com</b><button id="demo-toggle" class="toggle" type="button" role="switch" aria-checked="true" aria-label="Modo escuro na demonstração"><span></span></button></div></div>
+          <label class="preview-label">Seu tom de escuro</label>
+          <div class="tone-options" role="group" aria-label="Tom da demonstração"><button type="button" data-tone="soft" aria-pressed="false"><i class="tone-swatch tone-soft"></i>Suave</button><button type="button" data-tone="dark" class="selected" aria-pressed="true"><i class="tone-swatch tone-dark"></i>Escuro</button><button type="button" data-tone="black" aria-pressed="false"><i class="tone-swatch tone-black"></i>Preto</button></div>
+          <div class="preview-slider"><label for="demo-brightness">Brilho</label><output for="demo-brightness" id="demo-brightness-value">100%</output><input id="demo-brightness" type="range" min="80" max="120" value="100" step="1" aria-label="Brilho da demonstração"></div>
+          <div class="preview-footer"><svg class="icon"><use href="#i-check"/></svg>Seu ajuste. Em cada site.</div>
+        </div>
+        <div class="demo-interaction-hint"><span>Experimente o botão e os tons</span><svg viewBox="0 0 66 30" aria-hidden="true"><path d="M2 26c20 0 21-18 53-18m-9-6 10 6-8 8"/></svg></div>
+        <p class="illustration-note">PRÉVIA INTERATIVA · NENHUM SITE REAL É ALTERADO</p>
+      </div>
+    </section>
+
+    <div class="benefits wrap" aria-label="Características da extensão">
+      <div><svg class="icon"><use href="#i-moon"/></svg><p>Só nos sites que<br><b>você escolher</b></p></div>
+      <div><svg class="icon"><use href="#i-image"/></svg><p>Suas fotos e vídeos,<br><b>com as cores de sempre</b></p></div>
+      <div><svg class="icon"><use href="#i-sliders"/></svg><p>Um ajuste para cada site.<br><b>A extensão lembra.</b></p></div>
+      <div><svg class="icon"><use href="#i-shield"/></svg><p>Sem conta, anúncios<br><b>ou rastreamento</b></p></div>
+    </div>
+
+    <section class="features wrap" id="recursos" aria-labelledby="features-title">
+      <div class="section-heading"><div><span class="eyebrow">ESCURECER É SÓ O COMEÇO</span><h2 id="features-title">Cuidado com a luz.<br><em>Respeito ao conteúdo.</em></h2></div><p>Do ambiente de estudo ao texto mais longo,<br class="desktop-break"> o conteúdo continua sendo o protagonista.</p></div>
+      <div class="features-grid">
+        <div class="detail-preview">
+          <div class="detail-top"><span class="detail-caption">A DIFERENÇA ESTÁ NOS DETALHES</span><svg class="icon"><use href="#i-moon"/></svg></div>
+          <div class="detail-brand"><span class="detail-brand-symbol">a<span>✦</span></span><div><strong>aprender</strong><small>A identidade continua aqui.</small></div><span class="kept-color">Cor preservada<svg class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="detail-divider"></div>
+          <p class="detail-title">Tudo no seu lugar.<br><b>Com contraste para ler.</b></p>
+          <p class="detail-description">As letras ganham espaço sobre o fundo escuro.<br>E as cores continuam ajudando a encontrar o caminho.</p>
+          <div class="semantic-colors"><span><i></i>Concluído</span><span><i></i>Em andamento</span><a href="#instalar">Ver conteúdo<svg class="icon"><use href="#i-diagonal"/></svg></a></div>
+          <div class="detail-bottom"><span><svg class="icon"><use href="#i-check"/></svg>Texto legível</span><span><svg class="icon"><use href="#i-check"/></svg>Layout preservado</span></div>
+          <small class="detail-illustration">Demonstração ilustrativa</small>
+        </div>
+        <div class="feature-list">
+          <article><span class="feature-icon"><svg class="icon"><use href="#i-image"/></svg></span><div><h3>As cores continuam fazendo sentido.</h3><p>Fundos, textos e bordas se adaptam juntos. Fotos e vídeos mantêm suas cores; logos escuros sobre transparência podem ganhar contraste.</p></div><small>01</small></article>
+          <article><span class="feature-icon"><svg class="icon"><use href="#i-sliders"/></svg></span><div><h3>Encontre o seu tom de escuro.</h3><p>Suave, Escuro ou Preto. Ajuste brilho, contraste e luz quente pelo painel. Cada site fica com a combinação que você escolheu.</p></div><small>02</small></article>
+          <article><span class="feature-icon"><svg class="icon"><use href="#i-moon"/></svg></span><div><h3>Ative uma vez. Continue navegando.</h3><p>O tema acompanha as próximas visitas e os conteúdos que aparecem depois. Se o site já tiver um tema escuro, você pode preservá-lo.</p></div><small>03</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="lightweight wrap" aria-labelledby="weight-title">
+      <div class="weight-visual" aria-hidden="true"><span class="weight-orbit orbit-one"></span><span class="weight-orbit orbit-two"></span><span class="weight-orbit orbit-three"></span><svg class="icon"><use href="#i-feather"/></svg><span class="weight-dot dot-one"></span><span class="weight-dot dot-two"></span></div>
+      <div class="weight-copy"><span class="eyebrow">PEQUENA POR ESCOLHA</span><h2 id="weight-title">Uma extensão leve.<br><em>Para a sua leitura durar.</em></h2><p>O Always Dark só transforma os sites ativados. Nos demais, o motor fica de fora. E os ajustes são feitos no seu navegador, sem depender de um serviço remoto.</p></div>
+      <div class="weight-number"><strong data-installed-size>150<span>KB</span></strong><p>aproximadamente, instalada</p><small>O consumo de uma aba depende do site.</small></div>
+    </section>
+
+    <section class="installation" id="instalar" aria-labelledby="installation-title">
+      <div class="installation-grid wrap"><div class="installation-copy"><span class="eyebrow">DO DOWNLOAD AO SEU PRIMEIRO CLIQUE</span><h2 id="installation-title">Alguns passos.<br><em>Uma luz nova.</em></h2><p>O mesmo pacote funciona no Edge e no Chrome. Escolha seu navegador e siga o caminho.</p><a class="button button-primary" href="downloads/Always-Dark-1.0.0.zip" download data-download><svg class="icon"><use href="#i-download"/></svg>Baixar Always Dark<small data-version>v1.0.0</small></a><p class="release-meta"><span data-version>v1.0.0</span> · <span data-package-size>64 KB</span> · Download em ZIP</p><div class="package-note"><svg class="icon"><use href="#i-shield"/></svg><p>Instalação manual.<br>Ainda não publicado nas lojas de extensões.</p></div><a class="source-link" href="https://github.com/Benfic4rthur/AlwaysDarkMode" target="_blank" rel="noreferrer"><svg class="icon small"><use href="#i-github"/></svg>Prefere conferir o código?<svg class="icon tiny"><use href="#i-diagonal"/></svg></a></div>
+        <div class="installation-guide"><div class="browser-tabs" role="group" aria-label="Navegador para instalação"><button type="button" data-browser="edge" aria-pressed="true"><img src="assets/edge.png" width="22" height="22" alt="">Microsoft Edge<svg class="icon"><use href="#i-check"/></svg></button><button type="button" data-browser="chrome" aria-pressed="false"><img src="assets/chrome.svg" width="21" height="21" alt="">Google Chrome<svg class="icon"><use href="#i-check"/></svg></button></div>
+          <ol class="installation-steps"><li><span>01</span><div><h3>Baixe e extraia o arquivo</h3><p>Extraia o ZIP e guarde a pasta do Always Dark em um lugar fixo no computador.</p></div></li><li><span>02</span><div><h3>Abra as extensões do navegador</h3><p>Cole este endereço na barra do navegador e ative o <strong>Modo do desenvolvedor</strong>.</p><div class="copy-address"><code data-browser-address>edge://extensions</code><button type="button" data-copy-address><svg class="icon"><use href="#i-copy"/></svg><span>Copiar</span></button></div></div></li><li><span>03</span><div><h3>Carregue a pasta. Acenda a lua.</h3><p>Clique em <strong data-load-label>Carregar sem pacote</strong> e escolha a pasta com o arquivo <code>manifest.json</code>. Depois, abra um site e ative a extensão pelo ícone da lua.</p></div></li></ol><div class="install-tip"><svg class="icon"><use href="#i-pin"/></svg><p>Fixe o Always Dark na barra do navegador.<br>Os seus ajustes ficam sempre à mão.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="transparency wrap" aria-labelledby="transparency-title"><span class="transparency-icon"><svg class="icon"><use href="#i-github"/></svg></span><div><span class="eyebrow">CÓDIGO À VISTA</span><h2 id="transparency-title">Você pode olhar por dentro.</h2><p>O código, as instruções e os detalhes da extensão estão no GitHub. Suas preferências ficam no navegador; não há conta nem rastreamento.</p></div><a class="button button-outline" href="https://github.com/Benfic4rthur/AlwaysDarkMode" target="_blank" rel="noreferrer">Ver no GitHub<svg class="icon"><use href="#i-diagonal"/></svg></a></section>
+
+    <section class="faq wrap" id="perguntas" aria-labelledby="faq-title"><div><span class="eyebrow">ANTES DE APAGAR A LUZ</span><h2 id="faq-title">Mais alguma<br><em>dúvida?</em></h2></div><div class="faq-list">
+      <details><summary>Funciona em qualquer site?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Funciona nas páginas HTTP e HTTPS em que o navegador permite extensões. Páginas internas do Edge e do Chrome, lojas de extensões e o visualizador interno de PDF têm restrições. Alguns sites podem precisar de ajustes nos controles para chegar ao contraste que você prefere.</p></details>
+      <details><summary>É gratuito?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Sim. Você pode baixar e usar o Always Dark gratuitamente, sem criar uma conta.</p></details>
+      <details><summary>Preciso ativar de novo a cada visita?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Não. A ativação e os seus ajustes ficam salvos para cada site. Ao voltar, o Always Dark aplica a sua escolha. Você também pode desligar pelo painel quando quiser.</p></details>
+      <details><summary>Ele muda as cores das fotos e dos vídeos?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Fotos e vídeos mantêm seus pixels originais. Logos e ícones com traços escuros sobre transparência podem ser clareados para continuar legíveis, preservando suas partes coloridas. Imagens opacas com fundo branco são mantidas.</p></details>
+      <details><summary>A extensão fica consumindo recursos o tempo todo?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>O motor só entra nos sites que você ativou. Nessas páginas, ele acompanha as mudanças necessárias para manter o tema. Não há consultas periódicas às suas abas, e o processamento de uma aba depende do tamanho e do comportamento do próprio site.</p></details>
+      <details><summary>Por que a instalação é por ZIP?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Esta versão ainda não está nas lojas do Edge e do Chrome. O ZIP contém a extensão pronta: basta extrair e carregar a pasta pelo modo do desenvolvedor. Mantenha essa pasta no lugar para a extensão continuar funcionando.</p></details>
+    </div></section>
+
+    <section class="final-cta wrap"><img src="assets/always-dark.svg" width="80" height="80" alt=""><div><span class="eyebrow">O SEU PRÓXIMO MOMENTO DE LEITURA</span><h2>Seu conteúdo de sempre.<br>Com uma luz melhor.</h2></div><a class="button button-dark" href="downloads/Always-Dark-1.0.0.zip" download data-download>Quero experimentar<svg class="icon"><use href="#i-download"/></svg></a></section>
+  </main>
+
+  <footer class="site-footer wrap"><div class="footer-top"><a class="allm4-brand" href="https://allm4.com/"><img src="assets/allm4.svg" width="27" height="27" alt="">ALLM4</a><span>Software para uma vida mais simples.</span><div><a href="https://allm4.com/canalnongrato/" target="_blank" rel="noreferrer">CanalNonGrato<svg class="icon"><use href="#i-diagonal"/></svg></a><a href="https://allm4.com/tubeorder/" target="_blank" rel="noreferrer">TubeOrder<svg class="icon"><use href="#i-diagonal"/></svg></a><a href="https://github.com/Benfic4rthur/AlwaysDarkMode" target="_blank" rel="noreferrer">GitHub<svg class="icon"><use href="#i-diagonal"/></svg></a></div></div><div class="footer-bottom"><span>© 2026 ALLM4 · Always Dark <span data-version>v1.0.0</span></span><p>Motor de cores <a href="https://darkreader.org/" target="_blank" rel="noreferrer">Dark Reader</a> · Projeto independente, sem vínculo com Microsoft ou Google.</p><a href="#conteudo">Voltar ao topo ↑</a></div></footer>
+
+  <dialog id="download-dialog" aria-labelledby="dialog-title"><div class="dialog-inner"><button class="dialog-close" type="button" aria-label="Fechar instruções" data-close-dialog><svg class="icon"><use href="#i-close"/></svg></button><img class="dialog-icon" src="assets/always-dark.svg" width="48" height="48" alt=""><span class="eyebrow">ALWAYS DARK <span data-version>v1.0.0</span></span><h2 id="dialog-title">Uma luz nova.<br><em>A poucos cliques.</em></h2><p class="dialog-description">O download do ZIP foi solicitado. Quando terminar, extraia o arquivo e siga estes passos.</p><div class="browser-tabs" role="group" aria-label="Navegador para as instruções de download"><button type="button" data-browser="edge" aria-pressed="true"><img src="assets/edge.png" width="22" height="22" alt="">Microsoft Edge<svg class="icon"><use href="#i-check"/></svg></button><button type="button" data-browser="chrome" aria-pressed="false"><img src="assets/chrome.svg" width="21" height="21" alt="">Google Chrome<svg class="icon"><use href="#i-check"/></svg></button></div><ol class="installation-steps"><li><span>01</span><div><h3>Extraia e guarde a pasta</h3><p>Escolha um lugar fixo no computador para a pasta do Always Dark.</p></div></li><li><span>02</span><div><h3>Abra as extensões do navegador</h3><p>Copie o endereço e ative o <strong>Modo do desenvolvedor</strong>.</p><div class="copy-address"><code data-browser-address>edge://extensions</code><button type="button" data-copy-address><svg class="icon"><use href="#i-copy"/></svg><span>Copiar</span></button></div></div></li><li><span>03</span><div><h3>Carregue a pasta da extensão</h3><p>Clique em <strong data-load-label>Carregar sem pacote</strong> e selecione a pasta que contém <code>manifest.json</code>.</p></div></li></ol><a class="dialog-download" href="downloads/Always-Dark-1.0.0.zip" download><svg class="icon"><use href="#i-download"/></svg>Baixar o ZIP novamente</a></div></dialog>
+  <span class="sr-only" id="live-message" role="status" aria-live="polite"></span>
+</body>
+</html>

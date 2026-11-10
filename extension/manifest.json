@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Always Dark — modo escuro por site",
+  "short_name": "Always Dark",
+  "version": "1.0.0",
+  "description": "Transforme páginas claras em temas escuros equilibrados. Ative por site, ajuste o contraste e preserve imagens.",
+  "minimum_chrome_version": "119",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": {
+    "default_title": "Always Dark — ativar neste site",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" }
+  },
+  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": { "default": "Alt+Shift+D" },
+      "description": "Abrir o painel Always Dark"
+    }
+  },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'" },
+  "incognito": "not_allowed",
+  "offline_enabled": true
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Always Dark</title>
+  <link rel="icon" href="icons/icon-32.png">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="header">
+    <img class="brand-icon" src="icons/icon.svg" width="42" height="42" alt="">
+    <div><h1>Always Dark<span class="brand-dot">.</span></h1><p>Uma luz mais confortável.</p></div>
+    <span class="version">1.0</span>
+  </header>
+
+  <main>
+    <section class="site-card" aria-labelledby="site-heading">
+      <div class="site-topline"><span class="eyebrow" id="site-heading">NESTE SITE</span><span id="status" class="status">Carregando</span></div>
+      <div class="site-main">
+        <div class="site-identity">
+          <svg class="globe" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg>
+          <div><h2 id="hostname" title="">Lendo endereço…</h2><p id="site-description">Salvo separadamente para cada site</p></div>
+        </div>
+        <button id="toggle" class="switch" type="button" role="switch" aria-checked="false" aria-label="Ativar modo escuro neste site" disabled><span></span></button>
+      </div>
+    </section>
+
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+
+    <section class="appearance" aria-labelledby="appearance-heading">
+      <div class="section-heading"><h2 id="appearance-heading">Seu tom de escuro</h2><span>Escolha o conforto</span></div>
+      <div class="presets" role="group" aria-label="Tom do fundo">
+        <button type="button" class="preset" data-preset="soft" aria-pressed="false"><span class="swatch swatch-soft"><i></i><i></i><i></i></span>Suave</button>
+        <button type="button" class="preset selected" data-preset="dark" aria-pressed="true"><span class="swatch swatch-dark"><i></i><i></i><i></i></span>Escuro</button>
+        <button type="button" class="preset" data-preset="black" aria-pressed="false"><span class="swatch swatch-black"><i></i><i></i><i></i></span>Preto</button>
+      </div>
+    </section>
+
+    <section class="adjustments" aria-labelledby="adjustments-heading">
+      <div class="section-heading"><h2 id="adjustments-heading">Do teu jeito</h2><button type="button" id="reset" class="text-button">Restaurar</button></div>
+      <div class="slider-row">
+        <div class="slider-heading"><label for="brightness">Brilho</label><output id="brightness-value" for="brightness">100%</output></div>
+        <input id="brightness" type="range" min="80" max="120" step="1" value="100" aria-describedby="brightness-help">
+        <span class="sr-only" id="brightness-help">Ajusta o brilho das cores do site, de 80 a 120 por cento.</span>
+      </div>
+      <div class="slider-row">
+        <div class="slider-heading"><label for="contrast">Contraste</label><output id="contrast-value" for="contrast">100%</output></div>
+        <input id="contrast" type="range" min="80" max="120" step="1" value="100" aria-describedby="contrast-help">
+        <span class="sr-only" id="contrast-help">Ajusta a diferença entre textos e fundos, de 80 a 120 por cento.</span>
+      </div>
+      <div class="slider-row">
+        <div class="slider-heading"><label for="warmth">Luz quente</label><output id="warmth-value" for="warmth">0%</output></div>
+        <input id="warmth" class="warmth" type="range" min="0" max="50" step="1" value="0" aria-describedby="warmth-help">
+        <span class="sr-only" id="warmth-help">Adiciona um tom quente às cores, de zero a 50 por cento.</span>
+      </div>
+    </section>
+
+    <label class="native-option" for="preserveNative"><span><strong>Respeitar o tema do site</strong><small>Se ele já for escuro, preservar.</small></span><input id="preserveNative" type="checkbox" checked><span class="checkmark" aria-hidden="true"></span></label>
+    <p class="saved-note" id="saved-note">Os ajustes ficam salvos só para este site.</p>
+  </main>
+
+  <footer><svg aria-hidden="true" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 2 3 4.5V9c0 3.6 6 7 6 7s6-3.4 6-7V4.5L9 2Z"/><path d="m6 9 2 2 4-4"/></svg><span>Local e sem rastreamento</span><span class="footer-separator">·</span><span>Feito para ler</span></footer>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

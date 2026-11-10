@@ -1,0 +1,23 @@
+{
+  "name": "always-dark-mode",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Modo escuro por site para Microsoft Edge, com processamento local.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "package": "node scripts/package.mjs",
+    "site": "node scripts/serve-site.mjs",
+    "site:prepare": "node scripts/prepare-site.mjs"
+  },
+  "dependencies": {
+    "darkreader": "4.9.135"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.65.0",
+    "sharp": "0.35.5"
+  }
+}
