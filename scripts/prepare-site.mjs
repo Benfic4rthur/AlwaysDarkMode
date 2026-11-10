@@ -20,3 +20,7 @@ await writeFile(resolve(destination, 'assets/release.json'), JSON.stringify({
   installedBytes: await size(resolve(root, 'extension')),
 }, null, 2) + '\n');
 console.log('Site local preparado. O download aponta sempre para a última release do GitHub.');
+
+const page = resolve(destination, 'index.html');
+const html = await readFile(page, 'utf8');
+await writeFile(page, html.replace(/(data-version>)v[\d.]+/g, `$1v${manifest.version}`));

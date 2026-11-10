@@ -1,3 +1,5 @@
+import { fetchLatestRelease } from './releases.js';
+
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 const demo = $('#browser-demo');
@@ -103,18 +105,33 @@ dialog.addEventListener('click', event => {
 });
 
 async function loadRelease() {
+  const latest = fetchLatestRelease();
   try {
     const response = await fetch('assets/release.json');
-    if (!response.ok) return;
-    const release = await response.json();
-    if (!/^\d+\.\d+\.\d+$/.test(release.version) || !/^Always-Dark-[\d.]+\.zip$/.test(release.filename)) return;
-    for (const label of $$('[data-installed-size]')) label.innerHTML = `${Math.round(release.installedBytes / 1024)}<span>KB</span>`;
+    if (response.ok) {
+      const local = await response.json();
+      if (Number.isSafeInteger(local.installedBytes) && local.installedBytes > 0) {
+        for (const label of $$('[data-installed-size]')) label.innerHTML = `${Math.round(local.installedBytes / 1024)}<span>KB</span>`;
+      }
+    }
   } catch { /* The permanent GitHub download link also works without metadata. */ }
+  const release = await latest;
+  if (release) {
+    for (const label of $$('[data-version]')) {
+      label.textContent = `v${release.version}`;
+      label.title = 'Versão mais recente confirmada no GitHub';
+    }
+    for (const label of $$('[data-package-size]')) label.textContent = `${Math.ceil(release.bytes / 1024)} KB`;
+    document.documentElement.dataset.releaseSource = 'github';
+  } else {
+    for (const label of $$('[data-version]')) label.title = 'Versão de referência desta página; consulte o GitHub para confirmar a mais recente';
+    document.documentElement.dataset.releaseSource = 'local';
+  }
 }
 updateDemo();
 void loadRelease();
 
-// This exists only on the local preview server. No GitHub calls or polling.
+// This exists only on the local preview server. No polling.
 if (['127.0.0.1', 'localhost'].includes(location.hostname) && typeof EventSource === 'function') {
   const updates = new EventSource('/__reload');
   updates.addEventListener('refresh', () => location.reload());

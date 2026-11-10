@@ -30,7 +30,7 @@ const server = createServer(async (request, response) => {
       'cache-control': 'no-store',
       'x-content-type-options': 'nosniff',
       'referrer-policy': 'no-referrer',
-      'content-security-policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      'content-security-policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
       ...(extname(file) === '.zip' ? { 'content-disposition': `attachment; filename="${file.split(sep).pop()}"` } : {}),
     });
     response.end(request.method === 'HEAD' ? undefined : body);

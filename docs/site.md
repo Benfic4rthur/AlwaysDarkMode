@@ -14,7 +14,7 @@ Todos os botões de download usam o endereço permanente da última release:
 
 `https://github.com/Benfic4rthur/AlwaysDarkMode/releases/latest/download/Always-Dark.zip`
 
-Uma nova release marcada como mais recente e contendo **Always-Dark.zip** passa a ser baixada pelo mesmo botão. Não é preciso editar o site nem consultar a API do GitHub no navegador. Um push de código sozinho não publica uma release.
+Uma nova release marcada como mais recente e contendo **Always-Dark.zip** passa a ser baixada pelo mesmo botão. Não é preciso editar o endereço do download. O site consulta a API pública do GitHub uma vez por abertura para mostrar o número da release e o tamanho do pacote. Não há consulta periódica, token ou Actions. Se a consulta falhar, mantém a versão de referência do HTML e o download permanente. Um push de código sozinho não publica uma release.
 
 `npm run site:prepare` sincroniza o ícone e os metadados locais. Ao atualizar a extensão, execute `npm run package` antes de preparar o site. Os assets de marca e a fonte estão incluídos localmente.
 
