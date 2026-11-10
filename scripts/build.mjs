@@ -50,7 +50,7 @@ await build({
     },
   }],
 });
-for (const file of ['manifest.json', 'popup.html', 'popup.css']) await copyFile(resolve(root, 'src', file), resolve(output, file));
+for (const file of ['manifest.json', 'popup.html', 'popup.css', 'contrast.css']) await copyFile(resolve(root, 'src', file), resolve(output, file));
 await copyFile(resolve(root, 'src/icons/icon.svg'), resolve(output, 'icons/icon.svg'));
 for (const size of [16, 32, 48, 128]) {
   await sharp(resolve(root, 'src/icons/icon.svg')).resize(size, size).png().toFile(resolve(output, `icons/icon-${size}.png`));

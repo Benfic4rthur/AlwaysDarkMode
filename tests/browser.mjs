@@ -28,6 +28,7 @@ const server = createServer((req, res) => {
   else {
     res.writeHead(200, { 'content-type': 'text/html' });
     res.end(fixture(req.url === '/native').replace('http://localhost:PORT/cdn.css', 'https://assets.example.net/fixture.css')
+      .replace('</h1>', '</h1><span id="low-contrast-badge" class="badge" style="display:inline-block;border-radius:30px;padding:5px 12px;background:#000!important;color:#181922!important">Tarefas: receber uma nota</span>')
       .replace('<h1>', '<img id="brand-logo" src="/brand-logo.svg" alt="Marca de teste" width="240" height="64"><img id="light-logo" src="/light-logo.svg" alt="Marca clara" width="240" height="64"><img id="opaque-logo" src="/opaque-logo.svg" alt="Marca opaca" width="240" height="64"><h1>'));
   }
 });
@@ -98,6 +99,7 @@ try {
   assert.equal(await panel.getByRole('switch').getAttribute('aria-checked'), 'true');
   assert.equal((await worker.evaluate(() => chrome.scripting.getRegisteredContentScripts())).length, 1);
   await panel.screenshot({ path: resolve(out, 'painel.png') });
+  await panel.locator('body').screenshot({ path: resolve(out, 'painel-closeup.png') });
   pass('painel empacotado ativa o hostname atual e registra somente esse site');
 
   const textContrast = contrastRatio(rgb(await color(page, 'article')), rgb(await color(page, '#reading', 'color')));
@@ -146,6 +148,10 @@ try {
   await waitFor(() => dark(page, '.cdn'), 'CSS de outra origem não adaptado.');
   pass('formulários, botões, tabelas e CSS externo continuam utilizáveis');
 
+  await waitFor(async () => contrastRatio(rgb(await color(page, '#low-contrast-badge')), rgb(await color(page, '#low-contrast-badge', 'color'))) >= 4.5, 'O selo com texto escuro continuou ilegível.');
+  assert.equal(await page.locator('#low-contrast-badge').getAttribute('data-adm-contrast'), 'true');
+  pass('rótulo escuro sobre preto recebe contraste legível, inclusive com estilos !important');
+
   const sameFrame = page.frame({ url: `http://127.0.0.1:${port}/frame` });
   const blankFrame = page.frames().find(f => f.url() === 'about:srcdoc');
   await waitFor(() => dark(sameFrame, 'body'), 'O iframe do site não escureceu.');
@@ -193,6 +199,8 @@ try {
   await waitFor(async () => await page.locator('style.darkreader').count() === 0, 'Os estilos não foram removidos.');
   assert.equal(await page.locator('style.darkreader').count(), 0);
   assert.equal(await page.locator('[data-adm-readable]').count(), 0);
+  assert.equal(await page.locator('[data-adm-contrast]').count(), 0);
+  assert.equal(await color(page, '#low-contrast-badge', 'color'), 'rgb(24, 25, 34)');
   assert.equal((await worker.evaluate(() => chrome.scripting.getRegisteredContentScripts())).length, 0);
   pass('ajustes persistem ao recarregar; desligar restaura o site e remove o registro');
 

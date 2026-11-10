@@ -1,0 +1,4 @@
+[data-adm-contrast="true"] {
+  color: var(--adm-readable-foreground) !important;
+  -webkit-text-fill-color: var(--adm-readable-foreground) !important;
+}

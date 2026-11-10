@@ -5,9 +5,7 @@ const destination = resolve(root, 'site/dist');
 const manifest = JSON.parse(await readFile(resolve(root, 'extension/manifest.json'), 'utf8'));
 const filename = `Always-Dark-${manifest.version}.zip`;
 await mkdir(resolve(destination, 'assets'), { recursive: true });
-await mkdir(resolve(destination, 'downloads'), { recursive: true });
 await copyFile(resolve(root, 'src/icons/icon.svg'), resolve(destination, 'assets/always-dark.svg'));
-await copyFile(resolve(root, 'releases', filename), resolve(destination, 'downloads', filename));
 async function size(directory) {
   let total = 0;
   for (const entry of await readdir(directory)) {
@@ -21,4 +19,4 @@ await writeFile(resolve(destination, 'assets/release.json'), JSON.stringify({
   bytes: (await stat(resolve(root, 'releases', filename))).size,
   installedBytes: await size(resolve(root, 'extension')),
 }, null, 2) + '\n');
-console.log('Site local preparado, com o pacote da extensão e metadados correspondentes.');
+console.log('Site local preparado. O download aponta sempre para a última release do GitHub.');

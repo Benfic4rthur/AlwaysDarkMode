@@ -10,7 +10,8 @@
     "test:browser": "node tests/browser.mjs",
     "package": "node scripts/package.mjs",
     "site": "node scripts/serve-site.mjs",
-    "site:prepare": "node scripts/prepare-site.mjs"
+    "site:prepare": "node scripts/prepare-site.mjs",
+    "release": "node scripts/release.mjs"
   },
   "dependencies": {
     "darkreader": "4.9.135"

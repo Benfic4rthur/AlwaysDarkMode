@@ -17,6 +17,9 @@ function updateDemo() {
   demo.dataset.mode = dark ? 'dark' : 'light';
   demo.dataset.tone = tone;
   toggle.setAttribute('aria-checked', String(dark));
+  $('#demo-visible-toggle').setAttribute('aria-pressed', String(dark));
+  $('#demo-visible-toggle span').textContent = dark ? 'Desativar modo escuro' : 'Ativar modo escuro';
+  $('#demo-visible-toggle use').setAttribute('href', dark ? '#i-sun' : '#i-moon');
   $('#demo-status').innerHTML = `<i></i>${dark ? 'Ativado' : 'Desligado'}`;
   const brightness = Number($('#demo-brightness').value);
   $('#demo-brightness-value').value = `${brightness}%`;
@@ -26,7 +29,7 @@ function updateDemo() {
     const value = palette[property].map(channel => Math.min(255, Math.round(channel * brightness / 100)));
     demo.style.setProperty(`--demo-${property}`, `rgb(${value.join(' ')})`);
   }
-  for (const button of $$('[data-tone]')) {
+  for (const button of $$('.tone-options [data-tone]')) {
     const selected = button.dataset.tone === tone;
     button.setAttribute('aria-pressed', String(selected));
     button.classList.toggle('selected', selected);
@@ -34,6 +37,25 @@ function updateDemo() {
 }
 
 toggle.addEventListener('click', () => { dark = !dark; updateDemo(); });
+$('#demo-visible-toggle').addEventListener('click', () => { dark = !dark; updateDemo(); });
+const examples = {
+  study: { brand: 'aprender', domain: 'campus.exemplo / leitura', tag: 'UM TEMPO PARA APRENDER', title: 'Novas ideias.<br>Novas possibilidades.', text: 'Aprender começa com a curiosidade.<br>O próximo passo pode estar na sua próxima leitura.', menu: ['Visão geral', 'Minhas leituras', 'Anotações', 'Favoritos'] },
+  news: { brand: 'diário', domain: 'jornal.exemplo / histórias', tag: 'HISTÓRIAS PARA DESCOBRIR', title: 'Uma pausa.<br>Uma nova perspectiva.', text: 'Histórias que fazem olhar ao redor.<br>Encontre tempo para descobrir outros caminhos.', menu: ['Destaques', 'Cultura', 'Cotidiano', 'Salvos'] },
+  work: { brand: 'espaço', domain: 'painel.exemplo / projetos', tag: 'SEU TRABALHO, NO SEU RITMO', title: 'Ideias no papel.<br>Projetos em movimento.', text: 'Um espaço para organizar o que importa.<br>Continue seu trabalho com uma luz mais confortável.', menu: ['Visão geral', 'Projetos', 'Anotações', 'Arquivos'] },
+};
+for (const button of $$('[data-example]')) {
+  button.addEventListener('click', () => {
+    const example = examples[button.dataset.example];
+    for (const other of $$('[data-example]')) other.setAttribute('aria-pressed', String(other === button));
+    $('.demo-brand b').textContent = example.brand;
+    $('[data-demo-domain]').textContent = example.domain;
+    $('.preview-site b').textContent = example.domain.split(' / ')[0];
+    $('.demo-article-eyebrow').textContent = example.tag;
+    $('.demo-article h2').innerHTML = example.title;
+    $('.demo-article>p').innerHTML = example.text;
+    $$('.demo-menu').forEach((item, index) => { item.textContent = example.menu[index]; });
+  });
+}
 for (const button of $$('.tone-options [data-tone]')) {
   button.addEventListener('click', () => { tone = button.dataset.tone; dark = true; updateDemo(); });
 }
@@ -69,7 +91,8 @@ const dialog = $('#download-dialog');
 for (const link of $$('[data-download]')) {
   link.addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    // Leave the native download intact; the dialog only explains installation.
+    // GitHub redirects the stable asset URL to the latest published release.
+    // The new tab keeps these installation instructions open on this page.
     if (!dialog.open) dialog.showModal();
   });
 }
@@ -85,11 +108,8 @@ async function loadRelease() {
     if (!response.ok) return;
     const release = await response.json();
     if (!/^\d+\.\d+\.\d+$/.test(release.version) || !/^Always-Dark-[\d.]+\.zip$/.test(release.filename)) return;
-    for (const label of $$('[data-version]')) label.textContent = `v${release.version}`;
-    for (const label of $$('[data-package-size]')) label.textContent = `${Math.ceil(release.bytes / 1024)} KB`;
     for (const label of $$('[data-installed-size]')) label.innerHTML = `${Math.round(release.installedBytes / 1024)}<span>KB</span>`;
-    for (const link of $$('a[download]')) link.href = `downloads/${release.filename}`;
-  } catch { /* The included package and its printed version remain usable offline. */ }
+  } catch { /* The permanent GitHub download link also works without metadata. */ }
 }
 updateDemo();
 void loadRelease();

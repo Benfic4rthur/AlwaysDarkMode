@@ -1,6 +1,7 @@
 import * as DarkReader from 'darkreader';
 import { siteKey, sanitizeSettings, engineTheme, luminance, contrastRatio } from './settings.js';
 import { ImageContrast } from './image-contrast.js';
+import { ContrastGuard } from './contrast-guard.js';
 
 // The build wraps this entire module in a guard, including the color engine.
 const hostname = (() => {
@@ -21,6 +22,10 @@ let frame = 0;
 let nativeObserver;
 let proxyReady;
 const imageContrast = new ImageContrast(fetchPageResource);
+const contrastGuard = new ContrastGuard(async enabled => {
+  const response = await chrome.runtime.sendMessage({ type: 'ADM_CONTRAST_STYLE', enabled });
+  if (!response?.ok) throw new Error('Estilo indisponível.');
+});
 
 function parseRGB(value) {
   const values = value.match(/[\d.]+/g)?.map(Number);
@@ -56,6 +61,7 @@ function announce(next) {
 
 function stop() {
   imageContrast.stop();
+  contrastGuard.stop();
   if (DarkReader.isEnabled()) DarkReader.disable();
   document.dispatchEvent(new CustomEvent('__darkreader__cleanUp'));
   lastTheme = '';
@@ -76,6 +82,7 @@ async function apply() {
     if (revision !== generation || !options.enabled) return;
     if (nativeDarkTheme()) {
       imageContrast.start();
+      await contrastGuard.start();
       announce('native');
       if (!nativeObserver) {
         nativeObserver = new MutationObserver(() => {
@@ -110,6 +117,7 @@ async function apply() {
     lastTheme = serialized;
   }
   imageContrast.start();
+  await contrastGuard.start();
   announce('on');
 }
 

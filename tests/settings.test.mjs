@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DEFAULTS, sanitizeSettings, siteFromURL, validHostname, scriptId, engineTheme, contrastRatio } from '../src/settings.js';
 import { needsImageContrast } from '../src/image-contrast.js';
+import { improveContrast } from '../src/contrast-guard.js';
 
 test('configuração ausente ou corrompida mantém a extensão desligada', () => {
   for (const value of [undefined, null, [], 'invalid', 42]) assert.deepEqual(sanitizeSettings(value), DEFAULTS);
@@ -50,4 +51,11 @@ test('reconhece letras escuras transparentes; preserva imagens opacas, logos cla
   assert.equal(needsImageContrast(pixels([70, 75, 78, 255], [255, 110, 0, 255])), false);
   assert.equal(needsImageContrast(pixels([230, 230, 230, 255], [0, 0, 0, 0])), false);
   assert.equal(needsImageContrast(pixels([255, 110, 0, 255], [0, 0, 0, 0])), false);
+});
+
+test('corrige texto escuro em fundo escuro e preserva cores com contraste suficiente', () => {
+  for (const [foreground, background] of [[[20, 21, 29], [0, 0, 0]], [[40, 30, 45], [24, 25, 34]], [[110, 70, 170], [10, 10, 15]]]) {
+    assert.ok(contrastRatio(improveContrast(foreground, background), background) >= 4.5);
+  }
+  assert.equal(improveContrast([235, 230, 245], [24, 25, 34]), null);
 });

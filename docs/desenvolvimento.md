@@ -22,6 +22,8 @@ O motor dinâmico do [Dark Reader](https://github.com/darkreader/darkreader) tra
 
 Uma camada genérica adicional procura imagens identificadas como logos ou ícones, analisa uma amostra de até 64 pixels por dimensão e verifica o fundo em que aparecem. Quando encontra traços neutros escuros sobre transparência e um fundo escuro, clareia esses traços usando uma máscara de saturação. As partes coloridas da marca são preservadas. Logos claros, imagens opacas, fotos e avatares são excluídos dessa correção. Não há regras por domínio ou nomes de instituições no motor.
 
+Uma segunda verificação mede o contraste de botões, rótulos e etiquetas visíveis sobre fundos sólidos escuros. Quando necessário, ajusta apenas a cor do texto para alcançar 4,5:1 (ou 3:1 em texto grande). Uma folha CSS local na origem USER cobre também estilos inline prioritários, sem sobrescrever as declarações originais. Fundos com imagens ou gradientes são excluídos dessa análise. Ao desligar, a correção é removida.
+
 Conteúdo inserido depois, iframes autorizados do mesmo site, Shadow DOM e folhas de estilo criadas ou alteradas por JavaScript também são tratados. Frames de outros domínios seguem a ativação do próprio domínio; não são ativados automaticamente com o site que os incorpora.
 
 ## Peso e processamento
@@ -32,6 +34,7 @@ Conteúdo inserido depois, iframes autorizados do mesmo site, Shadow DOM e folha
 - A primeira transformação de uma aba oculta é adiada até ela ficar visível.
 - Ajustes dos controles deslizantes são agrupados para evitar reconstruir o tema a cada movimento.
 - A análise de logos usa lotes pequenos durante períodos ociosos, cache limitado e observação de entrada na tela. Ao desligar, seus observadores e filtros são removidos.
+- A verificação adicional de rótulos também usa observação de visibilidade e lotes ociosos, sem varreduras periódicas.
 - O cache transitório de recursos externos tem teto de 4 MiB; cada recurso tem limite de 2 MiB e timeout. Recursos já carregados no mesmo domínio usam o cache normal da página.
 
 O consumo de um site ativo depende da quantidade de estilos, frames e mudanças que o próprio site produz. O tamanho do pacote não representa o consumo total de memória de uma aba.

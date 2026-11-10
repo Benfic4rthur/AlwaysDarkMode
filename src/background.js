@@ -177,6 +177,16 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
     work = setBadge(sender.tab.id, message.status).then(() => ({}));
   } else if (message?.type === 'ADM_FETCH' && sender.tab) {
     work = fetchResource(message.url, sender);
+  } else if (message?.type === 'ADM_CONTRAST_STYLE' && sender.tab) {
+    work = (async () => {
+      const details = { target: { tabId: sender.tab.id, frameIds: [sender.frameId] }, files: ['contrast.css'], origin: 'USER' };
+      if (message.enabled === true) {
+        const hostname = siteFromURL(sender.tab.url);
+        if (!hostname || !(await readSite(hostname)).enabled) throw new Error('Site não ativado.');
+        await chrome.scripting.insertCSS(details);
+      } else await chrome.scripting.removeCSS(details);
+      return {};
+    })();
   } else if (message?.type === 'ADM_PROXY' && sender.tab) {
     work = (async () => {
       const hostname = siteFromURL(sender.tab.url);

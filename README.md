@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <strong><a href="#instalação">Instalar a extensão</a></strong>
+  <strong><a href="https://github.com/Benfic4rthur/AlwaysDarkMode/releases/latest/download/Always-Dark.zip">Baixar última versão</a></strong>
   &nbsp; · &nbsp;
   <a href="docs/guia.md">Guia de uso</a>
   &nbsp; · &nbsp;
@@ -34,9 +34,26 @@ Foi pensado para se adaptar a qualquer site, do ambiente de estudo ao trabalho. 
 | **Três tons de escuro** | Suave, Escuro e Preto, com brilho, contraste e luz quente ajustáveis. |
 | **Cores que continuam fazendo sentido** | Fundos, textos, controles e bordas se adaptam juntos. |
 | **Fotos e vídeos preservados** | Não há um filtro global invertendo os pixels de toda a página. |
+| **Rótulos legíveis** | Verifica o contraste de botões e etiquetas sobre fundos escuros, incluindo estilos prioritários. |
 | **Logos legíveis** | Traços neutros escuros sobre transparência podem ser clareados, mantendo as partes coloridas. |
 | **Preferências lembradas** | Cada site guarda sua própria combinação. Temas escuros nativos podem ser preservados. |
 | **Conteúdo dinâmico** | Acompanha mudanças na página, formulários, componentes e iframes autorizados. |
+
+## Veja a diferença
+
+O site local permite ligar e desligar o tema em exemplos de estudos, notícias e trabalho.
+
+| Tema original | Always Dark ativado |
+| :---: | :---: |
+| <img src=".github/assets/site-claro.jpg" alt="Demonstração com a página em tema claro" width="600" /> | <img src=".github/assets/site-escuro.jpg" alt="Mesma página em tema escuro, com a fotografia preservada" width="600" /> |
+
+## Um painel para encontrar seu conforto
+
+Ative por site, escolha o tom e ajuste a leitura. O painel é parte da extensão, em português e sem depender de servidor.
+
+<p align="center">
+  <img src=".github/assets/painel.png" alt="Painel real da extensão Always Dark: ativação por site, três tons, brilho, contraste e luz quente" width="364" />
+</p>
 
 ## Instalação
 
@@ -48,8 +65,8 @@ Você pode usar a pasta [`extension/`](extension/) deste repositório. Ela já c
 | Ative **Modo do desenvolvedor** | Ative **Modo do desenvolvedor** |
 | Clique em **Carregar sem pacote** | Clique em **Carregar sem compactação** |
 
-1. Baixe o código em **Code → Download ZIP**, extraia e guarde a pasta em um lugar fixo.
-2. No navegador, selecione a pasta **`extension`**, que contém `manifest.json`.
+1. [Baixe o ZIP da última versão](https://github.com/Benfic4rthur/AlwaysDarkMode/releases/latest/download/Always-Dark.zip), extraia e guarde a pasta em um lugar fixo.
+2. No navegador, selecione a pasta extraída que contém `manifest.json`. Se baixou o código em **Code → Download ZIP**, selecione a subpasta **`extension`**.
 3. Fixe o ícone da lua na barra, abra um site e ligue **Neste site** no painel.
 
 A distribuição é manual e ainda não está nas lojas dos navegadores. Para atualizar, substitua os arquivos da pasta instalada e clique em **Recarregar** no cartão da extensão. Mantenha essa pasta no lugar.
@@ -66,7 +83,7 @@ Leia o [guia de uso](docs/guia.md) para conhecer o escopo da ativação, os cont
 
 ## Leveza e privacidade
 
-- O pacote instalado tem aproximadamente **150 KiB**, com o motor, o painel e os ícones locais. Esse valor é tamanho em disco, não consumo de memória de uma aba.
+- O pacote instalado tem aproximadamente **155 KiB**, com o motor, o painel e os ícones locais. Esse valor é tamanho em disco, não consumo de memória de uma aba.
 - Sites não ativados não recebem o motor. O worker Manifest V3 funciona por eventos e pode dormir quando ocioso.
 - Não há conta, anúncios, telemetria, rastreamento ou IA remota. As preferências ficam em `chrome.storage.local`.
 - Os recursos necessários à adaptação de estilos e imagens vêm das próprias páginas e suas CDNs. Não há servidor da extensão recebendo o conteúdo das páginas.
@@ -77,13 +94,13 @@ As permissões são `activeTab`, `scripting` e `storage`, com acesso HTTP/HTTPS 
 
 ## Experimentar sem instalar
 
-O site inclui uma demonstração ilustrativa de ligar/desligar o tema, trocar os tons e ajustar o brilho.
+O site inclui uma demonstração de ligar/desligar o tema em exemplos de estudos, notícias e trabalho, trocar os tons e ajustar o brilho. O botão de download aponta sempre para a última versão publicada no GitHub.
 
 ```sh
 npm run site
 ```
 
-Abra **http://127.0.0.1:4173/**. O site roda somente no computador, com os assets locais e o pacote da extensão. [Veja o guia do site](docs/site.md).
+Abra **http://127.0.0.1:4173/**. O site roda somente no computador, com os assets locais. O download da extensão vem do GitHub. [Veja o guia do site](docs/site.md).
 
 ## Para quem quer olhar por dentro
 
